@@ -62,3 +62,9 @@ fi
 if [ -x "$KAVLING_DIR/watchdog_tv.sh" ]; then
     nohup "$KAVLING_DIR/watchdog_tv.sh" > /dev/null 2>&1 </dev/null &
 fi
+
+# 8. Start Cloudflare Tunnel for KavlingSaaS
+if ! busybox pgrep -f "cloudflared tunnel" > /dev/null 2>&1; then
+    nohup /data/data/com.termux/files/usr/bin/cloudflared tunnel --url http://127.0.0.1:3001 > /data/local/tmp/cloudflared.log 2>&1 &
+    echo $! > /data/local/tmp/cloudflared.pid
+fi
